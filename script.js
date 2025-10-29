@@ -162,18 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add interactive hover effects to glass cards
-    const glassCards = document.querySelectorAll('.glass-card');
-    
-    glassCards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-8px) scale(1.02)';
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0) scale(1)';
-        });
-    });
+    // Minimal hover effects - removed excessive animations
 
     // Add keyboard shortcuts
     document.addEventListener('keydown', function(e) {
@@ -260,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Add dynamic glass effect based on mouse position
+    // Add very subtle 3D tilt effect on mouse position
     document.addEventListener('mousemove', function(e) {
         const cards = document.querySelectorAll('.glass-card');
         
@@ -272,12 +261,12 @@ document.addEventListener('DOMContentLoaded', function() {
             if (x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
-                const rotateX = (y - centerY) / 10;
-                const rotateY = (centerX - x) / 10;
+                const rotateX = (y - centerY) / 200; // Extremely subtle rotation
+                const rotateY = (centerX - x) / 200; // Extremely subtle rotation
                 
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-5px)`;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             } else {
-                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
             }
         });
     });
