@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glass Morphism App</title>
+    <title>TempConvert - Temperature Conversion Tool</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -14,60 +14,152 @@
     </div>
     
     <nav class="glass-nav">
-        <div class="nav-brand">GlassApp</div>
+        <div class="nav-brand">🌡️ TempConvert</div>
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
+            <li><a href="#converter">Converter</a></li>
+            <li><a href="#units">Units</a></li>
+            <li><a href="#formulas">Formulas</a></li>
             <li><a href="#about">About</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
     <main class="container">
         <section class="hero-section">
             <div class="glass-card hero-card">
-                <h1>Welcome to Glass Morphism</h1>
-                <p>Experience the future of web design with our sleek glass morphism interface</p>
-                <button class="glass-btn primary">Get Started</button>
+                <h1>Temperature Converter</h1>
+                <p>Convert temperatures between Celsius, Fahrenheit, Kelvin, Réaumur, and Rankine with precision and style</p>
+                <button class="glass-btn primary" onclick="scrollToConverter()">Start Converting</button>
             </div>
         </section>
 
-        <section class="features-section">
-            <div class="glass-card feature-card">
-                <div class="card-icon">🚀</div>
-                <h3>Fast Performance</h3>
-                <p>Lightning-fast loading times with optimized glass effects</p>
-            </div>
-            
-            <div class="glass-card feature-card">
-                <div class="card-icon">🎨</div>
-                <h3>Modern Design</h3>
-                <p>Cutting-edge glass morphism with dark theme aesthetics</p>
-            </div>
-            
-            <div class="glass-card feature-card">
-                <div class="card-icon">📱</div>
-                <h3>Responsive</h3>
-                <p>Perfect glass effects across all devices and screen sizes</p>
+        <section id="converter" class="converter-section">
+            <div class="glass-card converter-card">
+                <h2>Universal Temperature Converter</h2>
+                <div class="converter-container">
+                    <div class="input-group">
+                        <label for="temperature-input">Enter Temperature</label>
+                        <input type="number" id="temperature-input" class="glass-input" placeholder="0" step="any">
+                        <select id="from-unit" class="glass-select">
+                            <option value="celsius">Celsius (°C)</option>
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                            <option value="reaumur">Réaumur (°Ré)</option>
+                            <option value="rankine">Rankine (°R)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="conversion-arrow">
+                        <button class="glass-btn swap-btn" onclick="swapUnits()">⇄</button>
+                    </div>
+                    
+                    <div class="results-grid">
+                        <div class="result-card glass-card" data-unit="celsius">
+                            <div class="unit-icon">°C</div>
+                            <div class="unit-name">Celsius</div>
+                            <div class="unit-value" id="celsius-result">0</div>
+                        </div>
+                        <div class="result-card glass-card" data-unit="fahrenheit">
+                            <div class="unit-icon">°F</div>
+                            <div class="unit-name">Fahrenheit</div>
+                            <div class="unit-value" id="fahrenheit-result">32</div>
+                        </div>
+                        <div class="result-card glass-card" data-unit="kelvin">
+                            <div class="unit-icon">K</div>
+                            <div class="unit-name">Kelvin</div>
+                            <div class="unit-value" id="kelvin-result">273.15</div>
+                        </div>
+                        <div class="result-card glass-card" data-unit="reaumur">
+                            <div class="unit-icon">°Ré</div>
+                            <div class="unit-name">Réaumur</div>
+                            <div class="unit-value" id="reaumur-result">0</div>
+                        </div>
+                        <div class="result-card glass-card" data-unit="rankine">
+                            <div class="unit-icon">°R</div>
+                            <div class="unit-name">Rankine</div>
+                            <div class="unit-value" id="rankine-result">491.67</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <section class="dashboard-section">
-            <div class="glass-card dashboard-card">
-                <h2>Dashboard Preview</h2>
-                <div class="dashboard-content">
-                    <div class="stat-card glass-card">
-                        <h4>Users</h4>
-                        <span class="stat-number">1,234</span>
+        <section id="units" class="units-section">
+            <div class="glass-card units-card">
+                <h2>Temperature Units</h2>
+                <div class="units-grid">
+                    <div class="unit-info glass-card">
+                        <div class="unit-symbol">°C</div>
+                        <h3>Celsius</h3>
+                        <p>Water freezes at 0°C and boils at 100°C. Most commonly used worldwide.</p>
                     </div>
-                    <div class="stat-card glass-card">
-                        <h4>Revenue</h4>
-                        <span class="stat-number">$45,678</span>
+                    
+                    <div class="unit-info glass-card">
+                        <div class="unit-symbol">°F</div>
+                        <h3>Fahrenheit</h3>
+                        <p>Water freezes at 32°F and boils at 212°F. Primarily used in the United States.</p>
                     </div>
-                    <div class="stat-card glass-card">
-                        <h4>Growth</h4>
-                        <span class="stat-number">+23%</span>
+                    
+                    <div class="unit-info glass-card">
+                        <div class="unit-symbol">K</div>
+                        <h3>Kelvin</h3>
+                        <p>Absolute temperature scale. 0K is absolute zero (-273.15°C). Used in science.</p>
                     </div>
+                    
+                    <div class="unit-info glass-card">
+                        <div class="unit-symbol">°Ré</div>
+                        <h3>Réaumur</h3>
+                        <p>Water freezes at 0°Ré and boils at 80°Ré. Historical scale used in Europe.</p>
+                    </div>
+                    
+                    <div class="unit-info glass-card">
+                        <div class="unit-symbol">°R</div>
+                        <h3>Rankine</h3>
+                        <p>Absolute temperature scale using Fahrenheit degrees. Used in engineering.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="formulas" class="formulas-section">
+            <div class="glass-card formulas-card">
+                <h2>Conversion Formulas</h2>
+                <div class="formulas-grid">
+                    <div class="formula-card glass-card">
+                        <h3>Celsius ⇄ Fahrenheit</h3>
+                        <div class="formula">°F = (°C × 9/5) + 32</div>
+                        <div class="formula">°C = (°F - 32) × 5/9</div>
+                    </div>
+                    
+                    <div class="formula-card glass-card">
+                        <h3>Celsius ⇄ Kelvin</h3>
+                        <div class="formula">K = °C + 273.15</div>
+                        <div class="formula">°C = K - 273.15</div>
+                    </div>
+                    
+                    <div class="formula-card glass-card">
+                        <h3>Celsius ⇄ Réaumur</h3>
+                        <div class="formula">°Ré = °C × 4/5</div>
+                        <div class="formula">°C = °Ré × 5/4</div>
+                    </div>
+                    
+                    <div class="formula-card glass-card">
+                        <h3>Celsius ⇄ Rankine</h3>
+                        <div class="formula">°R = (°C + 273.15) × 9/5</div>
+                        <div class="formula">°C = (°R × 5/9) - 273.15</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="about-section">
+            <div class="glass-card about-card">
+                <h2>About TempConvert</h2>
+                <p>TempConvert is a precision temperature conversion tool that supports all major temperature scales. Whether you're a scientist working with Kelvin, an engineer using Rankine, or simply need to convert Celsius to Fahrenheit for cooking, our tool provides instant, accurate conversions with a beautiful glass morphism interface.</p>
+                <div class="features-list">
+                    <div class="feature-item">⚡ Instant real-time conversion</div>
+                    <div class="feature-item">🎯 High precision calculations</div>
+                    <div class="feature-item">📱 Responsive design</div>
+                    <div class="feature-item">🌡️ All major temperature scales</div>
                 </div>
             </div>
         </section>

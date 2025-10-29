@@ -1,6 +1,147 @@
-// Glass Morphism Web Application JavaScript
+// Temperature Conversion Web Application JavaScript
+
+// Temperature conversion functions
+const temperatureConverter = {
+    // Convert from any unit to Celsius first, then to target unit
+    convert: function(value, fromUnit, toUnit) {
+        if (isNaN(value)) return 0;
+        
+        // Convert to Celsius first
+        let celsius;
+        switch (fromUnit) {
+            case 'celsius':
+                celsius = value;
+                break;
+            case 'fahrenheit':
+                celsius = (value - 32) * 5/9;
+                break;
+            case 'kelvin':
+                celsius = value - 273.15;
+                break;
+            case 'reaumur':
+                celsius = value * 5/4;
+                break;
+            case 'rankine':
+                celsius = (value - 491.67) * 5/9;
+                break;
+            default:
+                celsius = value;
+        }
+        
+        // Convert from Celsius to target unit
+        switch (toUnit) {
+            case 'celsius':
+                return celsius;
+            case 'fahrenheit':
+                return (celsius * 9/5) + 32;
+            case 'kelvin':
+                return celsius + 273.15;
+            case 'reaumur':
+                return celsius * 4/5;
+            case 'rankine':
+                return (celsius + 273.15) * 9/5;
+            default:
+                return celsius;
+        }
+    },
+    
+    // Format the result to appropriate decimal places
+    formatResult: function(value) {
+        if (Math.abs(value) >= 1000) {
+            return value.toFixed(1);
+        } else if (Math.abs(value) >= 100) {
+            return value.toFixed(2);
+        } else {
+            return value.toFixed(3);
+        }
+    }
+};
+
+// Scroll to converter function
+function scrollToConverter() {
+    document.getElementById('converter').scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+    });
+}
+
+// Swap units function
+function swapUnits() {
+    const fromSelect = document.getElementById('from-unit');
+    const input = document.getElementById('temperature-input');
+    
+    // Get current values
+    const currentFromUnit = fromSelect.value;
+    const currentValue = parseFloat(input.value) || 0;
+    
+    // Find the active result card to swap with
+    const activeCard = document.querySelector('.result-card.active');
+    if (activeCard) {
+        const targetUnit = activeCard.dataset.unit;
+        const targetValue = parseFloat(activeCard.querySelector('.unit-value').textContent);
+        
+        // Swap the values
+        fromSelect.value = targetUnit;
+        input.value = temperatureConverter.formatResult(targetValue);
+        
+        // Update conversions
+        updateConversions();
+    }
+}
+
+// Update all temperature conversions
+function updateConversions() {
+    const input = document.getElementById('temperature-input');
+    const fromUnit = document.getElementById('from-unit').value;
+    const inputValue = parseFloat(input.value) || 0;
+    
+    const units = ['celsius', 'fahrenheit', 'kelvin', 'reaumur', 'rankine'];
+    
+    // Remove active class from all cards
+    document.querySelectorAll('.result-card').forEach(card => {
+        card.classList.remove('active');
+    });
+    
+    // Add active class to the source unit card
+    const activeCard = document.querySelector(`[data-unit="${fromUnit}"]`);
+    if (activeCard) {
+        activeCard.classList.add('active');
+    }
+    
+    // Update all conversion results
+    units.forEach(unit => {
+        const resultElement = document.getElementById(`${unit}-result`);
+        const convertedValue = temperatureConverter.convert(inputValue, fromUnit, unit);
+        resultElement.textContent = temperatureConverter.formatResult(convertedValue);
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize temperature converter
+    const temperatureInput = document.getElementById('temperature-input');
+    const fromUnitSelect = document.getElementById('from-unit');
+    
+    // Add event listeners for real-time conversion
+    if (temperatureInput && fromUnitSelect) {
+        temperatureInput.addEventListener('input', updateConversions);
+        fromUnitSelect.addEventListener('change', updateConversions);
+        
+        // Initial conversion
+        updateConversions();
+    }
+    
+    // Add click handlers to result cards for easy swapping
+    document.querySelectorAll('.result-card').forEach(card => {
+        card.addEventListener('click', function() {
+            const unit = this.dataset.unit;
+            const value = this.querySelector('.unit-value').textContent;
+            
+            fromUnitSelect.value = unit;
+            temperatureInput.value = value;
+            updateConversions();
+        });
+    });
+
     // Smooth scrolling for navigation links
     const navLinks = document.querySelectorAll('.nav-links a');
     
@@ -34,54 +175,52 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Animate statistics numbers
-    function animateNumbers() {
-        const statNumbers = document.querySelectorAll('.stat-number');
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Focus input with Ctrl/Cmd + F
+        if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+            e.preventDefault();
+            temperatureInput.focus();
+        }
         
-        statNumbers.forEach(stat => {
-            const finalNumber = stat.textContent;
-            const isPercentage = finalNumber.includes('%');
-            const isDollar = finalNumber.includes('$');
-            const numericValue = parseInt(finalNumber.replace(/[^\d]/g, ''));
-            
-            let currentNumber = 0;
-            const increment = numericValue / 50;
-            
-            const timer = setInterval(() => {
-                currentNumber += increment;
-                
-                if (currentNumber >= numericValue) {
-                    currentNumber = numericValue;
-                    clearInterval(timer);
-                }
-                
-                let displayValue = Math.floor(currentNumber).toLocaleString();
-                
-                if (isDollar) {
-                    displayValue = '$' + displayValue;
-                } else if (isPercentage) {
-                    displayValue = '+' + Math.floor(currentNumber) + '%';
-                }
-                
-                stat.textContent = displayValue;
-            }, 50);
-        });
-    }
-
-    // Trigger number animation when dashboard comes into view
-    const dashboardSection = document.querySelector('.dashboard-section');
+        // Clear input with Escape
+        if (e.key === 'Escape' && document.activeElement === temperatureInput) {
+            temperatureInput.value = '';
+            updateConversions();
+        }
+    });
     
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateNumbers();
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0.5 });
+    // Add preset temperature buttons
+    const presetTemperatures = [
+        { label: 'Absolute Zero', value: -273.15, unit: 'celsius' },
+        { label: 'Water Freezing', value: 0, unit: 'celsius' },
+        { label: 'Room Temperature', value: 20, unit: 'celsius' },
+        { label: 'Body Temperature', value: 37, unit: 'celsius' },
+        { label: 'Water Boiling', value: 100, unit: 'celsius' }
+    ];
     
-    if (dashboardSection) {
-        observer.observe(dashboardSection);
+    // Create preset buttons if converter exists
+    const converterCard = document.querySelector('.converter-card');
+    if (converterCard) {
+        const presetsContainer = document.createElement('div');
+        presetsContainer.className = 'presets-container';
+        presetsContainer.innerHTML = '<h3>Quick Presets</h3><div class="presets-buttons"></div>';
+        
+        const buttonsContainer = presetsContainer.querySelector('.presets-buttons');
+        
+        presetTemperatures.forEach(preset => {
+            const button = document.createElement('button');
+            button.className = 'glass-btn preset-btn';
+            button.textContent = preset.label;
+            button.addEventListener('click', () => {
+                fromUnitSelect.value = preset.unit;
+                temperatureInput.value = preset.value;
+                updateConversions();
+            });
+            buttonsContainer.appendChild(button);
+        });
+        
+        converterCard.appendChild(presetsContainer);
     }
 
     // Add parallax effect to background shapes
@@ -144,8 +283,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Console welcome message
-    console.log('%c🚀 Glass Morphism App Loaded Successfully!', 
+    console.log('%c🌡️ TempConvert - Temperature Conversion Tool Loaded Successfully!', 
         'color: #ffffff; background: linear-gradient(45deg, #333333, #666666); padding: 10px; border-radius: 5px; font-size: 14px;');
+    console.log('%cSupported units: Celsius, Fahrenheit, Kelvin, Réaumur, Rankine', 
+        'color: #cccccc; font-size: 12px;');
 });
 
 // Add CSS for ripple effect
