@@ -1,3 +1,12 @@
+/*
+    TempConvert - Temperature Conversion Tool
+    Copyright (c) 2025 Krishan Yadav. All rights reserved.
+    
+    This software is protected by copyright.
+    Exact copying or commercial use without permission is prohibited.
+    See LICENSE file for complete terms and conditions.
+*/
+
 * {
     margin: 0;
     padding: 0;
@@ -704,5 +713,46 @@ reset Buttons */
     
     .result-card::before {
         display: none;
+    }
+}/* Fo
+oter */
+.glass-footer {
+    margin-top: 80px;
+    padding: 30px 20px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-content p {
+    color: #999999;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.footer-subtitle {
+    font-size: 0.8rem !important;
+    color: #666666 !important;
+}
+
+.copyright-year {
+    font-weight: bold;
+    color: #cccccc;
+}
+
+/* Mobile footer */
+@media (max-width: 480px) {
+    .glass-footer {
+        margin-top: 60px;
+        padding: 25px 15px;
+    }
+    
+    .footer-content p {
+        font-size: 0.8rem;
+    }
+    
+    .footer-subtitle {
+        font-size: 0.7rem !important;
     }
 }

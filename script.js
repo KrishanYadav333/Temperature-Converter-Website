@@ -1,3 +1,12 @@
+/*
+    TempConvert - Temperature Conversion Tool
+    Copyright (c) 2025 Krishan Yadav. All rights reserved.
+    
+    This software is protected by copyright.
+    Exact copying or commercial use without permission is prohibited.
+    See LICENSE file for complete terms and conditions.
+*/
+
 // Temperature Conversion Web Application JavaScript
 
 // Temperature conversion functions
@@ -271,11 +280,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Update copyright year automatically
+    function updateCopyrightYear() {
+        const currentYear = new Date().getFullYear();
+        const copyrightElements = document.querySelectorAll('.copyright-year');
+        copyrightElements.forEach(element => {
+            element.textContent = currentYear;
+        });
+    }
+    
+    // Call on page load
+    updateCopyrightYear();
+
     // Console welcome message
     console.log('%c🌡️ TempConvert - Temperature Conversion Tool Loaded Successfully!', 
         'color: #ffffff; background: linear-gradient(45deg, #333333, #666666); padding: 10px; border-radius: 5px; font-size: 14px;');
     console.log('%cSupported units: Celsius, Fahrenheit, Kelvin, Réaumur, Rankine', 
         'color: #cccccc; font-size: 12px;');
+    console.log(`%cCopyright © ${new Date().getFullYear()} Krishan Yadav. All rights reserved.`, 
+        'color: #999999; font-size: 10px;');
 });
 
 // Add CSS for ripple effect
